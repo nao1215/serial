@@ -36,8 +36,8 @@ jobs:
         if [ -f Gopkg.toml ]; then
             curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
         fi
-        make deps
-        make
+         cd $GOPATH/src/github.com/$GITHUB_REPOSITORY && make deps
+        cd $GOPATH/src/github.com/$GITHUB_REPOSITORY && make
 
   test:
     name: Test
@@ -67,5 +67,5 @@ jobs:
         if [ -f Gopkg.toml ]; then
             curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
         fi
-        make deps
-        make test
+        cd $GOPATH/src/github.com/$GITHUB_REPOSITORY && make deps
+        cd $GOPATH/src/github.com/$GITHUB_REPOSITORY && make test
