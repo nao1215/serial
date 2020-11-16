@@ -16,6 +16,7 @@ test: deps
 	@echo "Remove files for test at test directory."
 	@echo "--------------------------------------------------------------------"
 	rm -rf test/*
+	touch test/.gitkeep
 
 deps:
 	dep ensure
