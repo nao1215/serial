@@ -38,8 +38,8 @@ jobs:
             dep ensure
             go mod vendor
         fi
-        go build -o serial $GOPATH/src/github.com/$GITHUB_REPOSITORY/cmd/serial/main.go
-
+        cd $GOPATH/src/github.com/$GITHUB_REPOSITORY && ls
+        cd $GOPATH/src/github.com/$GITHUB_REPOSITORY && make
 
   test:
     name: Test
