@@ -38,7 +38,7 @@ jobs:
             dep ensure
             go mod vendor
         fi
-        cd $GOPATH/src/github.com/$GITHUB_REPOSITORY/../ && go build -v cmd/serial/main.go
+        cd $GOPATH/src/github.com/$GITHUB_REPOSITORY && go build -v ../cmd/serial/main.go
 
 
   test:
@@ -71,4 +71,4 @@ jobs:
             dep ensure
             go mod vendor
         fi
-        cd $GOPATH/src/github.com/$GITHUB_REPOSITORY/../ && make test
+        cd $GOPATH/src/github.com/$GITHUB_REPOSITORY && make test
