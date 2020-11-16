@@ -38,7 +38,6 @@ jobs:
             dep ensure
             go mod vendor
         fi
-        cd $GOPATH/src/github.com/$GITHUB_REPOSITORY && ls
         cd $GOPATH/src/github.com/$GITHUB_REPOSITORY && make
 
   test:
