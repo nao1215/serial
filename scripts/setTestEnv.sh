@@ -3,7 +3,7 @@
 TEST_DIR=$(pwd)/test
 FILES="Executable.txt Writable.txt Readable.txt NonExecutable.txt \
 NonWritable.txt NonReadable.txt AllZero.txt"
-DIRS="NoWritableDir NonExecutableDir"
+DIRS="NoWritableDir NonExecutableDir EmptyDir"
 
 function makeFile {
     touch $1

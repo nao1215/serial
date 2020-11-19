@@ -1,10 +1,11 @@
 # Binaries for programs and plugins
-serial
 *.exe
 *.exe~
 *.dll
 *.so
 *.dylib
+./serial
+test/*
 
 # Test binary, built with `go test -c`
 *.test
@@ -14,3 +15,7 @@ serial
 
 # Dependency directories (remove the comment below to include it)
 vendor/*
+
+# Coverage file
+cover.out
+cover.html
