@@ -28,6 +28,7 @@ Rename e.txt to demo_5.txt
   - [Installation](#installation)
   - [Usage](#usage)
   - [Development](#development)
+  - [Supported OS](#supported-os)
   - [Contact](#contact)
   - [LICENSE](#license)
   - [Credits](#credits)
@@ -50,6 +51,23 @@ $ serial --version
 serial version 0.0.3
 
 ʕ◔ϖ◔ʔ< If you don't see the version of the serial, the installation has failed.
+```
+
+
+If you want to install the binary of the serial command on your system, or if you want to install Man-pages, follow the steps below.
+```
+ʕ◔ϖ◔ʔ< Install dependency software.
+$ sudo apt install gzip pandoc
+$ go get github.com/golang/dep/cmd/dep
+
+ʕ◔ϖ◔ʔ< Get serial source code from GitHub.
+$ git clone https://github.com/nao1215/serial.git
+
+ʕ◔ϖ◔ʔ< Build serial command and man-pages, and install them.
+$ cd serial
+$ make
+$ make doc
+$ sudo make install
 ```
 
 ## Usage
@@ -78,8 +96,21 @@ $ git clone https://github.com/nao1215/serial.git
 The table below shows the tools used when developing the serial command.
 | Tool | description |
 |:-----|:------|
+| dep   | Used for managing dependencies for Go projects|
 | gobump   | Used for serial command version control |
-| ronn   | Convert markdown files to manpages |
+| pandoc   | Convert markdown files to manpages |
+| make   | Used for build, run, test, etc |
+| gzip   | Used for compress man pages |
+| install   | Used for install serial binary and document in the system |
+
+## Supported OS
+Currently, developers are only testing in a Linux (Debian) environment.
+
+| OS | description |
+|:-----|:------|
+| Linux  | Tested in Debian environment.|
+| Mac   | Not tested. However, since it is a UNIX-based OS, the serial command may work. |
+| Windows  | Not tested. It shouldn't work now, and there are no plans to support it. |
 
 ## Contact
 

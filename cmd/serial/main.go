@@ -16,7 +16,7 @@ const cmdName string = "serial"
 
 var osExit = os.Exit
 
-const version = "0.0.3"
+const version = "0.0.4"
 
 // Exit code
 const (
