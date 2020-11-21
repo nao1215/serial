@@ -1,5 +1,5 @@
 <div align="center">
-<img src="./docs/resources/image/serial_logo.jpg" alt="The serial command project logo was created by the [DesignEvo (online logo maker)">
+<img src="https://github.com/nao1215/serial/blob/main/docs/resources/image/serial_logo.jpg" alt="The serial command project logo was created by the [DesignEvo (online logo maker)">
 </div>
 
 # serial: Add serial number to file name
