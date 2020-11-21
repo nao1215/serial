@@ -15,6 +15,8 @@ const cmdName string = "serial"
 
 var osExit = os.Exit
 
+const version = "0.0.1"
+
 // Exit code
 const (
 	ExitSuccess int = iota // 0
@@ -22,12 +24,13 @@ const (
 )
 
 type options struct {
-	DryRun bool   `short:"d" long:"dry-run" description:"Output the file renaming result to standard output (do not update the file)"`
-	Force  bool   `short:"f" long:"force" description:"Forcibly overwrite and save even if a file with the same name exists"`
-	Keep   bool   `short:"k" long:"keep" description:"Keep the file before renaming"`
-	Name   string `short:"n" long:"name" value-name:"<name>" description:"Base file name with/without directory path (assign a serial number to this file name)"`
-	Prefix bool   `short:"p" long:"prefix" description:"Add a serial number to the beginning of the file name"`
-	Suffix bool   `short:"s" long:"suffix" description:"Add a serial number to the end of the file name(default)"`
+	DryRun  bool   `short:"d" long:"dry-run" description:"Output the file renaming result to standard output (do not update the file)"`
+	Force   bool   `short:"f" long:"force" description:"Forcibly overwrite and save even if a file with the same name exists"`
+	Keep    bool   `short:"k" long:"keep" description:"Keep the file before renaming"`
+	Name    string `short:"n" long:"name" value-name:"<name>" description:"Base file name with/without directory path (assign a serial number to this file name)"`
+	Prefix  bool   `short:"p" long:"prefix" description:"Add a serial number to the beginning of the file name"`
+	Suffix  bool   `short:"s" long:"suffix" description:"Add a serial number to the end of the file name(default)"`
+	Version bool   `short:"v" long:"version" description:"Show serial command version"`
 }
 
 func main() {
@@ -101,6 +104,12 @@ func parseArgs(opts *options) []string {
 	if err != nil {
 		osExit(ExitFailuer)
 	}
+
+	if opts.Version {
+		showVersion()
+		osExit(ExitSuccess)
+	}
+
 	if isValidArgNr(args) == false {
 		p.WriteHelp(os.Stdout)
 		osExit(ExitFailuer)
@@ -122,6 +131,10 @@ func isValidArgNr(args []string) bool {
 		return false
 	}
 	return true
+}
+
+func showVersion() {
+	fmt.Printf("serial version %s\n", version)
 }
 
 // getFilePathInDir returns the name of the file in the directory.

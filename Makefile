@@ -1,5 +1,7 @@
+GIT_VER=`git describe --tags`
+
 build:
-	go build -o serial cmd/serial/main.go
+	go build -o serial -ldflags "-X main.version=${GIT_VER}" cmd/serial/main.go
 
 run: build
 	@chmod a+x serial
@@ -12,6 +14,8 @@ clean:
 	-touch test/.gitkeep
 
 pre_test:
+	@echo "Clean test directory."
+	@rm -rf test/*
 	@echo "Make files for test at test directory."
 	@./scripts/setTestEnv.sh
 	@echo "--------------------------------------------------------------------"
