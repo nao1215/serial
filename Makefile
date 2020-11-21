@@ -1,4 +1,4 @@
-build: doc
+build:
 	go build -o serial  cmd/serial/main.go
 
 run: build
