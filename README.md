@@ -1,5 +1,6 @@
-{: align="center"}
-![The serial command project logo was created by the [DesignEvo (online logo maker)](https://www.designevo.com/).](./docs/resources/image/serial_logo.jpg)
+<div align="center">
+<img src="./docs/resources/image/serial_logo.jpg" alt="The serial command project logo was created by the [DesignEvo (online logo maker)">
+</div>
 
 # serial: Add serial number to file name
 ![build](https://github.com/nao1215/serial/workflows/build/badge.svg?event=push)
