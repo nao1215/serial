@@ -15,7 +15,7 @@ const cmdName string = "serial"
 
 var osExit = os.Exit
 
-const version = "0.0.1"
+const version = "0.0.2"
 
 // Exit code
 const (
@@ -172,7 +172,7 @@ func newNames(opts options, path []string) map[string]string {
 		}
 
 		if destDir == "." {
-			newNames[file] = filepath.Dir(file) + "/" + destDir + "/" + fileName
+			newNames[file] = fileName
 		} else {
 			newNames[file] = destDir + "/" + fileName
 		}
