@@ -6,6 +6,8 @@
 ![build](https://github.com/nao1215/serial/workflows/build/badge.svg?event=push)
 ![test](https://github.com/nao1215/serial/workflows/test/badge.svg)
 ![GitHub](https://img.shields.io/github/license/nao1215/serial)
+![GitHub issues](https://img.shields.io/github/issues-raw/nao1215/serial)
+![GitHub last commit](https://img.shields.io/github/last-commit/nao1215/serial)
 
 serial is a CLI command that renames files under any directory to the format "specified file name + serial number".
 
