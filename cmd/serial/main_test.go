@@ -115,7 +115,6 @@ func TestArgs3(t *testing.T) {
 func TestDieIfExistSameNameFile(t *testing.T) {
 	files := map[string]string{"test": "../../.gitignore"}
 
-	// https://www.366service.com/jp/qa/5b22164c9dadae9c1cd3ad5dd27bf806
 	// Save current function and restore at the end:
 	oldOsExit := osExit
 	defer func() { osExit = oldOsExit }()
@@ -157,25 +156,25 @@ func TestFileNameFormat(t *testing.T) {
 	opts.Prefix = true
 	opts.Suffix = false
 	format := fileNameFormat(opts, 100)
-	assert.Equal(t, "%03dtest%s", format)
+	assert.Equal(t, "%03d_test%s", format)
 
 	opts.Name = "漢字"
 	opts.Prefix = false
 	opts.Suffix = false
 	format = fileNameFormat(opts, 1000)
-	assert.Equal(t, "漢字%04d%s", format)
+	assert.Equal(t, "漢字_%04d%s", format)
 
 	opts.Name = "test"
 	opts.Prefix = false
 	opts.Suffix = true
 	format = fileNameFormat(opts, 10000)
-	assert.Equal(t, "test%05d%s", format)
+	assert.Equal(t, "test_%05d%s", format)
 
 	opts.Name = "test"
 	opts.Prefix = true
 	opts.Suffix = true
 	format = fileNameFormat(opts, 100000)
-	assert.Equal(t, "test%06d%s", format)
+	assert.Equal(t, "test_%06d%s", format)
 }
 
 func TestGetFilepathInDir(t *testing.T) {
@@ -209,15 +208,15 @@ func TestRun(t *testing.T) {
 	opts.Keep = true
 	run(args, opts)
 	// .gitkeep is not filename extension. However, serial command recognize so.
-	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/0test_file.gitkeep"))
-	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/1test_file.txt"))
-	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/2test_file.txt"))
-	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/3test_file.txt"))
-	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/4test_file.txt"))
-	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/5test_file.txt"))
-	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/6test_file.txt"))
-	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/7test_file.txt"))
-	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/8test_file.txt"))
+	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/0_test_file.gitkeep"))
+	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/1_test_file.txt"))
+	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/2_test_file.txt"))
+	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/3_test_file.txt"))
+	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/4_test_file.txt"))
+	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/5_test_file.txt"))
+	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/6_test_file.txt"))
+	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/7_test_file.txt"))
+	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/8_test_file.txt"))
 
 	args = []string{"../../test/make_TestRun"}
 	opts.Name = "../../test/make_TestRun/test_file"
@@ -225,16 +224,16 @@ func TestRun(t *testing.T) {
 	opts.Suffix = true
 	run(args, opts)
 	// .gitkeep is not filename extension. However, serial command recognize so.
-	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/test_file0.gitkeep"))
-	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/test_file1.txt"))
-	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/test_file2.txt"))
-	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/test_file3.txt"))
-	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/test_file4.txt"))
-	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/test_file5.txt"))
-	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/test_file6.txt"))
-	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/test_file7.txt"))
+	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/test_file_0.gitkeep"))
+	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/test_file_1.txt"))
+	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/test_file_2.txt"))
+	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/test_file_3.txt"))
+	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/test_file_4.txt"))
+	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/test_file_5.txt"))
+	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/test_file_6.txt"))
+	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/test_file_7.txt"))
 	//  symbolic link is broken.
-	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/test_file8.txt"))
+	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/test_file_8.txt"))
 
 	args = []string{"../../scripts"}
 	opts.Name = "../../test/make_TestRun/shell"
@@ -242,7 +241,7 @@ func TestRun(t *testing.T) {
 	opts.Suffix = false
 	opts.Keep = true
 	run(args, opts)
-	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/shell0.sh"))
+	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/shell_0.sh"))
 
 	args = []string{"."}
 	opts.Name = "no_copy"
@@ -253,7 +252,7 @@ func TestRun(t *testing.T) {
 	opts.Force = true
 	run(args, opts)
 	// check only one file
-	assert.Equal(t, false, fileutil.Exists("no_copy0.sh"))
+	assert.Equal(t, false, fileutil.Exists("no_copy_0.sh"))
 
 	args = []string{"."}
 	opts.Name = "no_copy"
@@ -264,7 +263,7 @@ func TestRun(t *testing.T) {
 	opts.Force = true
 	run(args, opts)
 	// check only one file
-	assert.Equal(t, false, fileutil.Exists("no_copy0.sh"))
+	assert.Equal(t, false, fileutil.Exists("no_copy_0.sh"))
 }
 
 func TestRun2(t *testing.T) {

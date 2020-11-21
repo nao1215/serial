@@ -174,10 +174,10 @@ func fileNameFormat(opts options, totalFileNr int) string {
 	ext := "%s"
 
 	// Default format（e.x.：%s03d%s → test001.txt）
-	format := baseName + serial + ext
+	format := baseName + "_" + serial + ext
 
 	if opts.Prefix == true && opts.Suffix == false {
-		format = serial + baseName + ext
+		format = serial + "_" + baseName + ext
 	}
 	return format
 }
