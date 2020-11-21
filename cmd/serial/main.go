@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"sort"
 	"strconv"
 
 	"github.com/jessevdk/go-flags"
@@ -15,7 +16,7 @@ const cmdName string = "serial"
 
 var osExit = os.Exit
 
-const version = "0.0.2"
+const version = "0.0.3"
 
 // Exit code
 const (
@@ -68,26 +69,38 @@ func run(args []string, opts options) int {
 }
 
 func rename(newFileNames map[string]string, dryRun bool) {
-	for org, dst := range newFileNames {
-		fmt.Printf("Rename %s to %s\n", org, dst)
+	keys := make([]string, 0, len(newFileNames))
+	for k := range newFileNames {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+
+	for _, org := range keys {
+		fmt.Printf("Rename %s to %s\n", org, newFileNames[org])
 		if dryRun == true {
 			continue
 		}
-		if err := os.Rename(org, dst); err != nil {
-			fmt.Fprintf(os.Stderr, "Can't rename %s to %s\n", org, dst)
+		if err := os.Rename(org, newFileNames[org]); err != nil {
+			fmt.Fprintf(os.Stderr, "Can't rename %s to %s\n", org, newFileNames[org])
 			osExit(1)
 		}
 	}
 }
 
 func copy(newFileNames map[string]string, dryRun bool) {
-	for org, dst := range newFileNames {
-		fmt.Printf("Copy %s to %s\n", org, dst)
+	keys := make([]string, 0, len(newFileNames))
+	for k := range newFileNames {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+
+	for _, org := range keys {
+		fmt.Printf("Copy %s to %s\n", org, newFileNames[org])
 		if dryRun == true {
 			continue
 		}
-		if err := os.Link(org, dst); err != nil {
-			fmt.Fprintf(os.Stderr, "Can't copy %s to %s\n", org, dst)
+		if err := os.Link(org, newFileNames[org]); err != nil {
+			fmt.Fprintf(os.Stderr, "Can't copy %s to %s\n", org, newFileNames[org])
 			osExit(ExitFailuer)
 		}
 	}
@@ -151,6 +164,8 @@ func getFilePathsInDir(dir string) []string {
 			paths = append(paths, filepath.Join(dir, file.Name()))
 		}
 	}
+
+	sort.Strings(paths)
 	return paths
 }
 
