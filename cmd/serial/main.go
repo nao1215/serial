@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"sort"
 	"strconv"
+	"strings"
 
 	"github.com/jessevdk/go-flags"
 	"github.com/nao1215/serial/pkg/fileutil"
@@ -16,7 +17,7 @@ const cmdName string = "serial"
 
 var osExit = os.Exit
 
-const version = "0.0.4"
+const version = "0.0.5"
 
 // Exit code
 const (
@@ -123,6 +124,11 @@ func parseArgs(opts *options) []string {
 		osExit(ExitSuccess)
 	}
 
+	if len(opts.Name) != 0 && existFilenameInPath(opts.Name) == false {
+		p.WriteHelp(os.Stdout)
+		osExit(ExitFailuer)
+	}
+
 	if isValidArgNr(args) == false {
 		p.WriteHelp(os.Stdout)
 		osExit(ExitFailuer)
@@ -148,6 +154,13 @@ func isValidArgNr(args []string) bool {
 
 func showVersion() {
 	fmt.Printf("serial version %s\n", version)
+}
+
+func existFilenameInPath(path string) bool {
+	if strings.HasSuffix(path, "/") {
+		return false
+	}
+	return true
 }
 
 // getFilePathInDir returns the name of the file in the directory.

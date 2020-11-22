@@ -1,9 +1,6 @@
 package main
 
 import (
-	"bytes"
-	"fmt"
-	"io"
 	"os"
 	"testing"
 
@@ -116,34 +113,9 @@ func TestArgs3(t *testing.T) {
 }
 
 func TestArgs4(t *testing.T) {
-	// check version
-	r, w, err := os.Pipe()
-	if err != nil {
-		t.Fatal(err)
-	}
-	stdout := os.Stdout
-	os.Stdout = w
-
+	var opts options
 	backupArgs := os.Args
-	testArgs := []string{"serial", "-v"}
-	os.Args = testArgs
-	opts := options{}
-	args(&opts)
 
-	os.Args = backupArgs
-	os.Stdout = stdout
-	w.Close()
-
-	var buf bytes.Buffer
-	io.Copy(&buf, r)
-
-	versionInfo := fmt.Sprintf("serial version %s", version)
-	if buf.String() != versionInfo {
-		t.Errorf("actual=%s, expect=%s", buf.String(), versionInfo)
-	}
-
-	// Die if show version
-	backupArgs = os.Args
 	oldOsExit := osExit
 	defer func() { osExit = oldOsExit }()
 
@@ -153,7 +125,53 @@ func TestArgs4(t *testing.T) {
 	}
 
 	osExit = myExit
-	testArgs = []string{"serial", "--version"}
+	testArgs := []string{"serial", "-v"}
+	os.Args = testArgs
+	args(&opts)
+
+	if exp := 1; got != exp {
+		t.Errorf("Expected exit code: %d, got: %d", exp, got)
+	}
+	os.Args = backupArgs
+}
+
+func TestArgs5(t *testing.T) {
+	// Die if show version
+	var opts options
+	backupArgs := os.Args
+	oldOsExit := osExit
+	defer func() { osExit = oldOsExit }()
+
+	var got int
+	myExit := func(code int) {
+		got = code
+	}
+
+	osExit = myExit
+	testArgs := []string{"serial", "--version"}
+	os.Args = testArgs
+	args(&opts)
+
+	if exp := 1; got != exp {
+		t.Errorf("Expected exit code: %d, got: %d", exp, got)
+	}
+	os.Args = backupArgs
+}
+
+func TestArgs6(t *testing.T) {
+	var opts options
+	backupArgs := os.Args
+
+	oldOsExit := osExit
+	defer func() { osExit = oldOsExit }()
+
+	var got int
+	myExit := func(code int) {
+		got = code
+	}
+
+	osExit = myExit
+	testArgs := []string{"serial", "-n", "no_specify_filename/"}
 	os.Args = testArgs
 	args(&opts)
 
