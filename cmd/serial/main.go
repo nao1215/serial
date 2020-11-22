@@ -17,7 +17,7 @@ const cmdName string = "serial"
 
 var osExit = os.Exit
 
-const version = "0.0.5"
+const version = "0.0.6"
 
 // Exit code
 const (
@@ -171,13 +171,14 @@ func getFilePathsInDir(dir string) []string {
 		osExit(ExitFailuer)
 	}
 
+	var path string
 	var paths []string
 	for _, file := range files {
-		if fileutil.IsFile(filepath.Join(dir, file.Name())) {
-			paths = append(paths, filepath.Join(dir, file.Name()))
+		path = filepath.Join(dir, file.Name())
+		if fileutil.IsFile(path) && fileutil.IsHiddenFile(path) == false {
+			paths = append(paths, path)
 		}
 	}
-
 	sort.Strings(paths)
 	return paths
 }

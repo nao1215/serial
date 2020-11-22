@@ -2,6 +2,8 @@ package fileutil
 
 import (
 	"os"
+	"path"
+	"strings"
 )
 
 const (
@@ -67,4 +69,13 @@ func IsWritable(path string) bool {
 func IsExecutable(path string) bool {
 	stat, err := os.Stat(path)
 	return (err == nil) && ((stat.Mode() & Executable) != 0)
+}
+
+// IsHiddenFile reports whether the path exists and is included hidden file.
+func IsHiddenFile(filePath string) bool {
+	_, file := path.Split(filePath)
+	if IsFile(filePath) == true && strings.HasPrefix(file, ".") == true {
+		return true
+	}
+	return false
 }

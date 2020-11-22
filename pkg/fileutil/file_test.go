@@ -12,6 +12,7 @@ func TestIsFile(t *testing.T) {
 	assert.Equal(t, false, IsFile("../../test"))
 	assert.Equal(t, true, IsFile("../../test/AllZero.txt"))
 	assert.Equal(t, false, IsFile("../../test/NoReadableDir"))
+	assert.Equal(t, true, IsFile("../../.gitignore"))
 	assert.Equal(t, false, IsFile("abcdef"))
 }
 
@@ -82,4 +83,15 @@ func TestIsExecutable(t *testing.T) {
 	assert.Equal(t, false, IsExecutable("../../test/NonExecutable.txt"))
 	assert.Equal(t, false, IsExecutable("abcdef"))
 	assert.Equal(t, false, IsExecutable("../../test/AllZero.txt"))
+}
+
+func TestIsHiddenFile(t *testing.T) {
+	assert.Equal(t, false, IsHiddenFile("../../test/Executable.txt"))
+	assert.Equal(t, true, IsHiddenFile("../../.gitignore"))
+	assert.Equal(t, false, IsHiddenFile("./file.go"))
+	assert.Equal(t, false, IsHiddenFile("/etc"))
+	assert.Equal(t, false, IsHiddenFile("../../test/"))
+	assert.Equal(t, false, IsHiddenFile("../../test"))
+	assert.Equal(t, false, IsHiddenFile("abcdef"))
+	assert.Equal(t, false, IsHiddenFile(".abcdef"))
 }

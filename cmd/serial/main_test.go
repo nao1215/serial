@@ -276,8 +276,8 @@ func TestRun(t *testing.T) {
 	opts.Suffix = false
 	opts.Keep = true
 	run(args, opts)
-	// .gitkeep is not filename extension. However, serial command recognize so.
-	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/0_test_file.gitkeep"))
+	assert.Equal(t, false, fileutil.Exists("../../test/make_TestRun/0_test_file.gitkeep"))
+	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/0_test_file.txt"))
 	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/1_test_file.txt"))
 	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/2_test_file.txt"))
 	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/3_test_file.txt"))
@@ -285,7 +285,7 @@ func TestRun(t *testing.T) {
 	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/5_test_file.txt"))
 	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/6_test_file.txt"))
 	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/7_test_file.txt"))
-	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/8_test_file.txt"))
+	assert.Equal(t, false, fileutil.Exists("../../test/make_TestRun/8_test_file.txt"))
 
 	args = []string{"../../test/make_TestRun"}
 	opts.Name = "../../test/make_TestRun/test_file"
@@ -293,7 +293,8 @@ func TestRun(t *testing.T) {
 	opts.Suffix = true
 	run(args, opts)
 	// .gitkeep is not filename extension. However, serial command recognize so.
-	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/test_file_0.gitkeep"))
+	assert.Equal(t, false, fileutil.Exists("../../test/make_TestRun/test_file_0.gitkeep"))
+	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/test_file_0.txt"))
 	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/test_file_1.txt"))
 	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/test_file_2.txt"))
 	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/test_file_3.txt"))
@@ -301,8 +302,6 @@ func TestRun(t *testing.T) {
 	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/test_file_5.txt"))
 	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/test_file_6.txt"))
 	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/test_file_7.txt"))
-	//  symbolic link is broken.
-	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/test_file_8.txt"))
 
 	args = []string{"../../scripts"}
 	opts.Name = "../../test/make_TestRun/shell"
