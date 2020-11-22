@@ -3,6 +3,7 @@ package fileutil
 import (
 	"os"
 	"path"
+	"path/filepath"
 	"strings"
 )
 
@@ -78,4 +79,13 @@ func IsHiddenFile(filePath string) bool {
 		return true
 	}
 	return false
+}
+
+// BaseNameWithoutExt return file name without extension.
+func BaseNameWithoutExt(path string) string {
+	_, file := filepath.Split(path)
+	if filepath.Ext(path) == "" {
+		return file
+	}
+	return file[:len(file)-len(filepath.Ext(path))]
 }

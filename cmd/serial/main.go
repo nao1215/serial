@@ -17,7 +17,7 @@ const cmdName string = "serial"
 
 var osExit = os.Exit
 
-const version = "0.0.6"
+const version = "0.0.7"
 
 // Exit code
 const (
@@ -89,19 +89,39 @@ func rename(newFileNames map[string]string, dryRun bool) {
 }
 
 func copy(newFileNames map[string]string, dryRun bool) {
+	var dest string
 	keys := make([]string, 0, len(newFileNames))
+
 	for k := range newFileNames {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
 
 	for _, org := range keys {
-		fmt.Printf("Copy %s to %s\n", org, newFileNames[org])
+		dest = newFileNames[org]
+		fmt.Printf("Copy %s to %s\n", org, dest)
 		if dryRun == true {
 			continue
 		}
-		if err := os.Link(org, newFileNames[org]); err != nil {
-			fmt.Fprintf(os.Stderr, "Can't copy %s to %s\n", org, newFileNames[org])
+		// In the case of renaming, even the same file name can be overwritten.
+		// On the other hand, in the case of copying, an error will occur
+		// if serial command try to overwrite with the same file name.
+		if org == dest {
+			continue
+		}
+
+		// If this function is running, it will force the file to be overwritten.
+		// If there is the file with the same name in the copy destination,
+		// delete it before copy the file.
+		if fileutil.Exists(dest) {
+			if err := os.Remove(dest); err != nil {
+				fmt.Fprintf(os.Stderr, "Can't copy %s to %s\n", org, dest)
+				osExit(ExitFailuer)
+			}
+		}
+
+		if err := os.Link(org, dest); err != nil {
+			fmt.Fprintf(os.Stderr, "Can't copy %s to %s\n", org, dest)
 			osExit(ExitFailuer)
 		}
 	}
@@ -176,7 +196,7 @@ func getFilePathsInDir(dir string) []string {
 	for _, file := range files {
 		path = filepath.Join(dir, file.Name())
 		if fileutil.IsFile(path) && fileutil.IsHiddenFile(path) == false {
-			paths = append(paths, path)
+			paths = append(paths, filepath.Clean(path))
 		}
 	}
 	sort.Strings(paths)
@@ -186,39 +206,43 @@ func getFilePathsInDir(dir string) []string {
 func newNames(opts options, path []string) map[string]string {
 	newNames := make(map[string]string)
 	destDir := filepath.Dir(opts.Name)
+
 	var fileName string
 	var format string
-
-	format = fileNameFormat(opts, len(path))
-
+	// TODO: Refactor for a simpler implementation
 	for i, file := range path {
-		e := filepath.Ext(file)
+		ext := filepath.Ext(file)
+
+		if len(opts.Name) == 0 {
+			format = fileNameFormat(opts.Prefix, opts.Suffix, fileutil.BaseNameWithoutExt(file), len(path))
+		} else {
+			format = fileNameFormat(opts.Prefix, opts.Suffix, opts.Name, len(path))
+		}
 
 		if opts.Prefix == true && opts.Suffix == false {
-			fileName = fmt.Sprintf(format, i, e)
+			fileName = fmt.Sprintf(format, i, ext)
 		} else {
-			fileName = fmt.Sprintf(format, i, e)
+			fileName = fmt.Sprintf(format, i, ext)
 		}
 
 		if destDir == "." {
-			newNames[file] = fileName
+			newNames[file] = filepath.Clean(fileName)
 		} else {
-			newNames[file] = destDir + "/" + fileName
+			newNames[file] = filepath.Clean(destDir + "/" + fileName)
 		}
-
 	}
 	return newNames
 }
 
-func fileNameFormat(opts options, totalFileNr int) string {
-	baseName := filepath.Base(opts.Name)
+func fileNameFormat(prefix bool, suffix bool, name string, totalFileNr int) string {
+	baseName := filepath.Base(name)
 	serial := "%0" + strconv.Itoa(len(strconv.Itoa(totalFileNr))) + "d"
 	ext := "%s"
 
 	// Default format（e.x.：%s03d%s → test001.txt）
 	format := baseName + "_" + serial + ext
 
-	if opts.Prefix == true && opts.Suffix == false {
+	if prefix == true && suffix == false {
 		format = serial + "_" + baseName + ext
 	}
 	return format

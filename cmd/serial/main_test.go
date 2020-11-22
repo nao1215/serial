@@ -221,28 +221,25 @@ func TestMakeDirIfNeeded(t *testing.T) {
 func TestFileNameFormat(t *testing.T) {
 	// BUG: If opts.Name is %d or %s, make invalid format.
 	var opts options
-	opts.Name = "test"
-	opts.Prefix = true
-	opts.Suffix = false
-	format := fileNameFormat(opts, 100)
+	format := fileNameFormat(true, false, "test", 100)
 	assert.Equal(t, "%03d_test%s", format)
 
 	opts.Name = "漢字"
 	opts.Prefix = false
 	opts.Suffix = false
-	format = fileNameFormat(opts, 1000)
+	format = fileNameFormat(false, false, "漢字", 1000)
 	assert.Equal(t, "漢字_%04d%s", format)
 
 	opts.Name = "test"
 	opts.Prefix = false
 	opts.Suffix = true
-	format = fileNameFormat(opts, 10000)
+	format = fileNameFormat(false, true, "test", 10000)
 	assert.Equal(t, "test_%05d%s", format)
 
 	opts.Name = "test"
 	opts.Prefix = true
 	opts.Suffix = true
-	format = fileNameFormat(opts, 100000)
+	format = fileNameFormat(true, true, "test", 100000)
 	assert.Equal(t, "test_%06d%s", format)
 }
 
@@ -292,7 +289,6 @@ func TestRun(t *testing.T) {
 	opts.Prefix = false
 	opts.Suffix = true
 	run(args, opts)
-	// .gitkeep is not filename extension. However, serial command recognize so.
 	assert.Equal(t, false, fileutil.Exists("../../test/make_TestRun/test_file_0.gitkeep"))
 	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/test_file_0.txt"))
 	assert.Equal(t, true, fileutil.Exists("../../test/make_TestRun/test_file_1.txt"))
@@ -319,7 +315,6 @@ func TestRun(t *testing.T) {
 	opts.DryRun = true
 	opts.Force = true
 	run(args, opts)
-	// check only one file
 	assert.Equal(t, false, fileutil.Exists("no_copy_0.sh"))
 
 	args = []string{"."}
@@ -330,8 +325,55 @@ func TestRun(t *testing.T) {
 	opts.DryRun = true
 	opts.Force = true
 	run(args, opts)
-	// check only one file
 	assert.Equal(t, false, fileutil.Exists("no_copy_0.sh"))
+
+	args = []string{"../../test/NoEmptyDir"}
+	opts.Name = ""
+	opts.Prefix = true
+	opts.Suffix = false
+	opts.Keep = true
+	opts.DryRun = false
+	opts.Force = false
+	run(args, opts)
+	assert.Equal(t, true, fileutil.Exists("0_aaa.txt"))
+	assert.Equal(t, true, fileutil.Exists("1_bbb.txt"))
+	assert.Equal(t, true, fileutil.Exists("2_ccc.txt"))
+
+	args = []string{"../../test/NoEmptyDir"}
+	opts.Name = ""
+	opts.Prefix = false
+	opts.Suffix = true
+	opts.Keep = true
+	opts.DryRun = false
+	opts.Force = false
+	run(args, opts)
+	assert.Equal(t, true, fileutil.Exists("aaa_0.txt"))
+	assert.Equal(t, true, fileutil.Exists("bbb_1.txt"))
+	assert.Equal(t, true, fileutil.Exists("ccc_2.txt"))
+
+	args = []string{"../../test/NoEmptyDir"}
+	opts.Name = ""
+	opts.Prefix = false
+	opts.Suffix = true
+	opts.Keep = true
+	opts.DryRun = false
+	opts.Force = true
+	run(args, opts)
+	assert.Equal(t, true, fileutil.Exists("aaa_0.txt"))
+	assert.Equal(t, true, fileutil.Exists("bbb_1.txt"))
+	assert.Equal(t, true, fileutil.Exists("ccc_2.txt"))
+
+	args = []string{"../../test/NoEmptyDir"}
+	opts.Name = ""
+	opts.Prefix = false
+	opts.Suffix = true
+	opts.Keep = false
+	opts.DryRun = false
+	opts.Force = true
+	run(args, opts)
+	assert.Equal(t, true, fileutil.Exists("aaa_0.txt"))
+	assert.Equal(t, true, fileutil.Exists("bbb_1.txt"))
+	assert.Equal(t, true, fileutil.Exists("ccc_2.txt"))
 }
 
 func TestRun2(t *testing.T) {
@@ -350,6 +392,45 @@ func TestRun2(t *testing.T) {
 
 func TestCopy(t *testing.T) {
 	files := map[string]string{"no_exist": "./no_exist_dir/new_file"}
+	oldOsExit := osExit
+	defer func() { osExit = oldOsExit }()
+
+	var got int
+	myExit := func(code int) {
+		got = code
+	}
+
+	osExit = myExit
+	copy(files, false)
+	if exp := 1; got != exp {
+		t.Errorf("Expected exit code: %d, got: %d", exp, got)
+	}
+}
+
+func TestCopy2(t *testing.T) {
+	files := map[string]string{
+		"../../test/Writable.txt":         "../../test/Writable.txt",
+		"../../test/NoEmptyDir/aaa_0.txt": "../../cmd/serial/aaa_0.txt",
+	}
+	oldOsExit := osExit
+	defer func() { osExit = oldOsExit }()
+
+	var got int
+	myExit := func(code int) {
+		got = code
+	}
+
+	osExit = myExit
+	copy(files, false)
+	if exp := 1; got != exp {
+		t.Errorf("Expected exit code: %d, got: %d", exp, got)
+	}
+}
+
+func TestCopy3(t *testing.T) {
+	files := map[string]string{
+		"dummy": "../../test",
+	}
 	oldOsExit := osExit
 	defer func() { osExit = oldOsExit }()
 

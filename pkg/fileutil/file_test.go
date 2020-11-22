@@ -95,3 +95,14 @@ func TestIsHiddenFile(t *testing.T) {
 	assert.Equal(t, false, IsHiddenFile("abcdef"))
 	assert.Equal(t, false, IsHiddenFile(".abcdef"))
 }
+
+func TestBaseNameWithoutExt(t *testing.T) {
+	assert.Equal(t, "Executable", BaseNameWithoutExt("../../test/Executable.txt"))
+	assert.Equal(t, "", BaseNameWithoutExt("../../.gitignore"))
+	assert.Equal(t, "file", BaseNameWithoutExt("./file.go"))
+	assert.Equal(t, "etc", BaseNameWithoutExt("/etc"))
+	assert.Equal(t, "", BaseNameWithoutExt("../../test/"))
+	assert.Equal(t, "test", BaseNameWithoutExt("../../test"))
+	assert.Equal(t, "abcdef", BaseNameWithoutExt("abcdef"))
+	assert.Equal(t, "", BaseNameWithoutExt(".abcdef"))
+}

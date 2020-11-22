@@ -3,7 +3,7 @@
 TEST_DIR=$(pwd)/test
 FILES="Executable.txt Writable.txt Readable.txt NonExecutable.txt \
 NonWritable.txt NonReadable.txt AllZero.txt"
-DIRS="NoWritableDir NonExecutableDir EmptyDir"
+DIRS="NoWritableDir NonExecutableDir EmptyDir NoEmptyDir"
 
 function makeFile {
     touch $1
@@ -48,3 +48,7 @@ chmod a-w ${TEST_DIR}/NoWritableDir
 chmod a-x ${TEST_DIR}/NonExecutableDir
 
 ln -sf ${TEST_DIR}/Executable.txt ${TEST_DIR}/symbolic.txt
+
+touch ${TEST_DIR}/NoEmptyDir/aaa.txt
+touch ${TEST_DIR}/NoEmptyDir/bbb.txt
+touch ${TEST_DIR}/NoEmptyDir/ccc.txt
