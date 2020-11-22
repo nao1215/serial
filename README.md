@@ -26,6 +26,8 @@ Rename e.txt to demo_5.txt
 - [serial: Add serial number to file name](#serial-add-serial-number-to-file-name)
   - [Contents](#contents)
   - [Installation](#installation)
+    - [Get serial command binary from zip or tarball.](#get-serial-command-binary-from-zip-or-tarball)
+    - [Build by yourself](#build-by-yourself)
   - [Usage](#usage)
   - [Development](#development)
   - [Supported OS](#supported-os)
@@ -34,6 +36,11 @@ Rename e.txt to demo_5.txt
   - [Credits](#credits)
 
 ## Installation
+### Get serial command binary from zip or tarball.
+The source code and binaries are distributed on the [Release Page](https://github.com/nao1215/serial/releases) in ZIP format or tar.gz format.
+Choose the binary that suits your OS and CPU architecture.
+
+### Build by yourself
 If you don't have Golang installed on your system, install it first.  Please install according to the procedure of [Golang official document](https://golang.org/doc/install).
 ```Install
 ʕ◔ϖ◔ʔ< This procedure can be outdated.
@@ -52,7 +59,6 @@ serial version 0.0.3
 
 ʕ◔ϖ◔ʔ< If you don't see the version of the serial, the installation has failed.
 ```
-
 
 If you want to install the binary of the serial command on your system, or if you want to install Man-pages, follow the steps below.
 ```
@@ -104,13 +110,51 @@ The table below shows the tools used when developing the serial command.
 | install   | Used for install serial binary and document in the system |
 
 ## Supported OS
-Currently, developers are only testing in a Linux (Debian) environment.
+Currently, developers are only testing in a Linux (Debian, amd64) environment.
+The cross-compiled binaries for each OS are placed on the [Release Page](https://github.com/nao1215/serial/releases) .
+So, if you want to try it, please use them. If you find a bug, feel free to report it.
 
-| OS | description |
-|:-----|:------|
-| Linux  | Tested in Debian environment.|
-| Mac   | Not tested. However, since it is a UNIX-based OS, the serial command may work. |
-| Windows  | Not tested. It shouldn't work now, and there are no plans to support it. |
+| OS | Architecture|Binary| Test |
+|:-----|:------|:------|:------|
+| AIX  | ppc64 | Released| Untested |
+| Android | i386 | Unreleased| Untested |
+| Android | amd64 | Unreleased| Untested |
+| Android | arm | Unreleased| Untested |
+| Android | arm64 | Released| Untested |
+| Mac | i386 | Unreleased| Untested |
+| Mac | amd64 | Released| Untested |
+| Mac | arm | Unreleased| Untested |
+| Mac | arm64 | Unreleased| Untested |
+| Dragonfly | amd64 | Released| Untested |
+| FreeBSD | i386 | Released| Untested |
+| FreeBSD | amd64 | Released| Untested |
+| FreeBSD | arm | Released| Untested |
+| Illumos | amd64 | Released| Untested |
+| Js | wasm | Unreleased| Untested |
+| Linux | i386 | Released| Untested |
+| Linux | amd64 | Released| Tested |
+| Linux | arm | Released| Untested |
+| Linux | arm64 | Released| Untested |
+| Linux | ppc64 | Released| Untested |
+| Linux | ppc64le | Released| Untested |
+| Linux | mips | Released| Untested |
+| Linux | mipsle | Released| Untested |
+| Linux | mips64 | Released| Untested |
+| Linux | mips64le | Released| Untested |
+| Linux | ms390xips | Released| Untested |
+| NetBSD | i386 | Released| Untested |
+| NetBSD | amd64 | Released| Untested |
+| NetBSD | arm | Released| Untested |
+| OpenBSD | i386 | Released| Untested |
+| OpenBSD | amd64 | Released| Untested |
+| OpenBSD | arm | Released| Untested |
+| OpenBSD | amd64 | Released| Untested |
+| Plan9 | i386 | Released| Untested |
+| Plan9 | amd64 | Released| Untested |
+| Plan9 | arm | Released| Untested |
+| Solaris | amd64 | Released| Untested |
+| Windows | i386 | Unreleased| Untested (Seems to not work) |
+| Windows | amd64 | Unreleased| Untested (Seems to not work) |
 
 ## Contact
 

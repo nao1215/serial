@@ -9,6 +9,7 @@ clean:
 	-rm serial
 	-rm -rf test/*
 	-rm cover.*
+	-rm -rf release
 	-rm ./docs/man/en/serial.1.gz
 	-rm ./docs/man/ja/serial.1.gz
 	-touch test/.gitkeep
@@ -44,3 +45,6 @@ test: deps pre_test
 deps:
 	dep ensure
 	go mod vendor
+
+release:
+	./scripts/Release.sh

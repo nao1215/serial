@@ -16,6 +16,9 @@ test/*
 # Dependency directories (remove the comment below to include it)
 vendor/*
 
+# release directory
+release/*
+
 # Coverage file
 cover.out
 cover.html
