@@ -116,7 +116,7 @@ So, if you want to try it, please use them. If you find a bug, feel free to repo
 
 | OS | Architecture|Binary| Test |
 |:-----|:------|:------|:------|
-| AIX  | ppc64 | Released| Untested |
+| AIX  | ppc64 | Unreleased| Untested |
 | Android | i386 | Unreleased| Untested |
 | Android | amd64 | Unreleased| Untested |
 | Android | arm | Unreleased| Untested |
