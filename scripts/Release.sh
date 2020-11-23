@@ -41,6 +41,13 @@ function cpLicense() {
     cp -f LICENSE ${release}
 }
 
+function cpInstaller() {
+    release="$1"
+
+    cd ${CWD}
+    cp -f scripts/installer.sh ${release}
+}
+
 function mkRelease() {
     cd ${CWD}
     os="$1"
@@ -57,6 +64,7 @@ function mkRelease() {
     echo "" >> ${BIN_INFO_TXT}
     mv ${CWD}/${PROJECT} ${release_path}/.
     cpLicense ${release_path}/.
+    cpInstaller ${release_path}/.
     cpManpages ${release_path}/.
 
     cd ${RELEASE}/$os/

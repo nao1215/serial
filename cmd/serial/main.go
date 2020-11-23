@@ -17,7 +17,7 @@ const cmdName string = "serial"
 
 var osExit = os.Exit
 
-const version = "1.0.1"
+const version = "1.0.2"
 
 // Exit code
 const (
@@ -183,7 +183,7 @@ func existFilenameInPath(path string) bool {
 	return true
 }
 
-// getFilePathInDir returns the name of the file in the directory.
+// getFilePathsInDir returns the paths of the file in the directory.
 func getFilePathsInDir(dir string) []string {
 	files, err := ioutil.ReadDir(dir)
 	if err != nil {
