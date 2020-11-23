@@ -40,6 +40,14 @@ Rename e.txt to demo_5.txt
 The source code and binaries are distributed on the [Release Page](https://github.com/nao1215/serial/releases) in ZIP format or tar.gz format.
 Choose the binary that suits your OS and CPU architecture.
 
+Release files for Version 1.0.2 and later include installer scripts.
+For example, in the case of Linux (amd64), you can install the serial command on your system with the following command:
+```
+$ tar xf serial-v1.0.2-linux-amd64.tar.gz
+$ cd serial-v1.0.2-linux-amd64
+$ sudo ./installer.sh
+```
+
 ### Build by yourself
 If you don't have Golang installed on your system, install it first.  Please install according to the procedure of [Golang official document](https://golang.org/doc/install).
 ```Install
